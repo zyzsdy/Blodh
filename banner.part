@@ -1,0 +1,8 @@
+/**
+ * Blodh v<%= pkg.version %>
+ * <%= grunt.template.today("yyyy-mm-dd") %>
+ * A HTML5 Bilibili extern loader with danmaku.
+ *
+ * Wrote by Ted Zyzsdy, Licensed by Apache License 2.0
+ */
+ 
