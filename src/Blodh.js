@@ -1,5 +1,7 @@
 (function () {
-    var backendUrl = "https://127.0.0.1/backend/blodhapi.php";
+    var backendUrl = "/backend/blodhapi.php";
+    var front_appkey = "8e9fc618fbd41e28";
+    var usefront = true; //尽量使用本地连接（仅限http）
     var ajaxGet = function (url, data, callback) {
         var xhr = new XMLHttpRequest();
         var dataArr = [];
@@ -16,6 +18,23 @@
         xhr.send();
         return xhr;
     };
+    var jsonpGet = function (url, data, callback) {
+        var scriptNode = document.createElement("script");
+        var callbackName = "_blodh_cb" + (new Date().getTime());
+        var dataArr = [];
+        dataArr.push("callback=" + callbackName);
+        for (var propKey in data) {
+            dataArr.push(propKey + "=" + data[propKey]);
+        }
+        var resUrl = url + "?" + dataArr.join("&");
+        
+        window[callbackName] = function(response){
+            callback(response);
+            delete window[callbackName];
+        }
+        scriptNode.src = resUrl;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(scriptNode);
+    };
     var Blodh = {
         "init": function (elem) {
             if (!elem.dataset.loaded) {
@@ -25,14 +44,25 @@
                 var avid = elem.getAttribute("bl-avid");
                 var page = elem.getAttribute("bl-page") === null ? 1 : elem.getAttribute("bl-page");
                 //getinfo
-                ajaxGet(backendUrl, {
-                    "type": "info",
-                    "avid": avid,
-                    "page": page
-                }, function (data) {
-                    data = JSON.parse(data);
-                    Blodh._buildWrapper(elem, data.title, data.cid);
-                });
+                if(usefront){
+                    jsonpGet("http://api.bilibili.com/view",{
+                        "appkey": front_appkey,
+                        "id": avid,
+                        "page": page,
+                        "type": "jsonp",
+                    }, function(data) {
+                        Blodh._buildWrapper(elem, data.title, data.cid);
+                    });
+                }else{
+                    ajaxGet(backendUrl, {
+                        "type": "info",
+                        "avid": avid,
+                        "page": page
+                    }, function (data) {
+                        data = JSON.parse(data);
+                        Blodh._buildWrapper(elem, data.title, data.cid);
+                    });
+                }
                 elem.dataset.loaded = true;
             }
         },
@@ -83,12 +113,21 @@
                             "cid": cid
                         }, function (data) {
                             data = JSON.parse(data);
-                            var turl = data.durl[0].url;
-                            videoNode.src = turl;
+                            var turl = data.durl[0].backup_url
+                            turl.push(data.durl[0].url);
+                            for(var i=0; i< turl.length; i++){
+                                var sourceNode = document.createElement("source");
+                                sourceNode.src = turl[i];
+                                videoNode.appendChild(sourceNode);
+                            }
                             var inst = ABP.create(abplayerNode, {
                                 "src": videoNode,
                             });
-                            CommentLoader(backendUrl + "?type=danmaku&cid=" + cid, inst.cmManager);
+                            if(usefront){
+                                CommentLoader("http://comment.bilibili.com/" + cid + ".xml", inst.cmManager);
+                            }else{
+                                CommentLoader(backendUrl + "?type=danmaku&cid=" + cid, inst.cmManager);
+                            }
                         })
                         toggleButton.dataset.play = "loaded";
                     }
