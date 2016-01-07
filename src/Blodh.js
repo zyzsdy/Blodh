@@ -113,7 +113,8 @@
                             "cid": cid
                         }, function (data) {
                             data = JSON.parse(data);
-                            var turl = data.durl[0].backup_url
+                            var turl = []
+                            if(data.durl[0].backup_url !== undefined) turl = data.durl[0].backup_url
                             turl.push(data.durl[0].url);
                             for(var i=0; i< turl.length; i++){
                                 var sourceNode = document.createElement("source");
