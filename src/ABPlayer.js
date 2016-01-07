@@ -161,7 +161,7 @@ var ABP = {
 						"className": "button ABP-Play"
 				}),
 				_("div", {
-					"className": "progress-bar"
+					"className": "ABPprogress-bar"
 				},[
 					_("div", {
 						"className": "bar dark"
@@ -383,7 +383,7 @@ var ABP = {
 		if(_p.length <= 0) return;
 		ABPInst.btnPlay = _p[0];
 		/** Bind the Loading Progress Bar **/
-		var pbar = playerUnit.getElementsByClassName("progress-bar");
+		var pbar = playerUnit.getElementsByClassName("ABPprogress-bar");
 		if(pbar.length <= 0) return;
 		ABPInst.barHitArea = pbar[0];
 		var pbars = pbar[0].getElementsByClassName("bar");

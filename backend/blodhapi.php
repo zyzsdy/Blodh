@@ -7,7 +7,7 @@
  */
 session_start();
 ob_start();
-define("BLODH_VERSION", "1.0.0");
+define("BLODH_VERSION", "1.0.1");
 define("UA", $_SERVER['HTTP_USER_AGENT']);
 
 //============================================

@@ -173,7 +173,7 @@
   background-size:cover;
   top:0;right:20px;bottom:0;
 }
-.ABP-Unit .ABP-Control .progress-bar {
+.ABP-Unit .ABP-Control .ABPprogress-bar {
   position:absolute;
   overflow:hidden;
   cursor:default;
@@ -181,14 +181,14 @@
   background:#000;
 }
 
-.ABP-Unit .ABP-Control .progress-bar .bar{
+.ABP-Unit .ABP-Control .ABPprogress-bar .bar{
   position:absolute;
   left:0;top:0;bottom:0;
   background:#4CE62F;
   opacity:0.4;
 }
 
-.ABP-Unit .ABP-Control .progress-bar .bar.dark{
+.ABP-Unit .ABP-Control .ABPprogress-bar .bar.dark{
   background:#07A005;
   opacity:1;
 }
