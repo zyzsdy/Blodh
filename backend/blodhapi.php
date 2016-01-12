@@ -90,6 +90,8 @@ function getInfo(){
     $avid = $_REQUEST['avid'];
     $page = $_REQUEST['page'];
     
+    header("Access-Control-Allow-Origin: *", true);
+    header("Access-Control-Max-Age: 86400", true);
     header("Content-Type: application/json;charset=UTF-8", true);
     echo get_data("http://api.bilibili.com/view", array(
         'type' => 'json',
@@ -104,6 +106,8 @@ function getVideo(){
     }
     $cid = $_REQUEST['cid'];
     
+    header("Access-Control-Allow-Origin: *", true);
+    header("Access-Control-Max-Age: 86400", true);
     header("Content-Type: application/json;charset=UTF-8", true);
     echo get_data("http://interface.bilibili.com/playurl", array(
         'platform' => 'blodh',

@@ -1,7 +1,7 @@
 (function () {
     var backendUrl = "/backend/blodhapi.php";
     var front_appkey = "8e9fc618fbd41e28";
-    var usefront = true; //尽量使用本地连接（仅限http）
+    var usefront = false; //尽量使用本地连接（仅限http）
     var ajaxGet = function (url, data, callback) {
         var xhr = new XMLHttpRequest();
         var dataArr = [];
